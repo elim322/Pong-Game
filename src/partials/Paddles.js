@@ -22,16 +22,14 @@ export default class Paddle {
     });
   } //end of constructor
 
-  up(){
-    this.y = this.y - this.speed;
-    Math.max = this.y - this.height;
-    Math.min = this.y - this.height; 
-  }
+  up() {
+    this.y = Math.max(0, this.y - this.speed);
+    
+    }
 
   down(){
     this.y = this.y + this.speed;
-    Math.max = this.y + this.height;
-    Math.min = this.y + this.height; 
+    this.y = Math.min(this.boardHeight - this.height, this.y + this.speed);
   }
 
   render(svg) {
