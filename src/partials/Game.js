@@ -2,6 +2,7 @@ import Board from './Board';
 import Paddle from './Paddles';
 import Ball from './Ball'
 import Score from './Score'; 
+import Winner from './Winner';
 import { SVG_NS, KEYS } from '../settings';
 
 export default class Game {
@@ -17,7 +18,7 @@ export default class Game {
     this.ball = new Ball(8, this.width, this.height);
 
     this.paddleWidth = 8;
-    this.paddleHeight = 56;
+    this.paddleHeight = 60;
     this.boardGap = 10;
 
     this.player1 = new Paddle(
@@ -40,13 +41,20 @@ export default class Game {
       KEYS.up,
       KEYS.down,
       'player2'
-		);
+        );
+    // this.player2ai = new Paddle(
+    //     this.height,
+    //     this.paddleWidth,
+    //     this.paddleHeight,
+    //     this.ai,
+    //     (this.width - this.boardGap - this.paddleWidth),
+    //   ((this.height - this.paddleHeight) / 2),
+    //   'player2ai'
+    // );
 		
 		this.score1 = new Score(this.width / 2 - 50, 30, 30);
 		this.score2 = new Score(this.width / 2 + 25, 30, 30); 
 
-    // console.log(this.player1);
-    // console.log(this.player2);
 
     document.addEventListener('keydown', event => {
             switch (event.key) {
@@ -55,8 +63,13 @@ export default class Game {
                     break;
             }
         });
+        this.winner = new Winner(
+            this.width,
+            this.height
+        );
 
     }// constructor
+   
 
     render() {
 
@@ -79,9 +92,19 @@ export default class Game {
     this.player1.render(svg);
     this.player2.render(svg);
 
-		this.ball.render(svg, this.player1, this.player2);
-		this.score1.render(svg, this.player1.score); 
-		this.score2.render(svg, this.player2.score);
+    this.ball.render(svg, this.player1, this.player2);
+	this.score1.render(svg, this.player1.score); 
+    this.score2.render(svg, this.player2.score);
+
+    if (this.player1.score === 3) {
+        this.winner.render(svg, this.player1.player);
+        this.reset();
+        return; 
+    } else if (this.player2.score === 3) {
+        this.winner.render(svg, this.player2.player);
+        this.reset();
+        return; 
+    }
     
     }
 
