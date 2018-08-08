@@ -2,7 +2,7 @@ import { SVG_NS } from '../settings';
 
 export default class Paddle {
 
-  constructor(boardHeight, width, height, x, y, up, down, player) {
+  constructor(boardHeight, width, height, x, y, up, down, player, ai, ball) {
     this.boardHeight = boardHeight;
     this.width = width;
     this.height = height;
@@ -12,7 +12,9 @@ export default class Paddle {
     this.score = 0;
     this.player = player;
     this.keyState = {};
-
+    this.ai = ai; // true or false
+    this.ball = ball; // to track ball position
+ 
     // document.addEventListener('keydown', event => {
     //   switch (event.key) {
     //     case up:
@@ -22,12 +24,18 @@ export default class Paddle {
     //       this.down();
     //       break;
     //   }
-    document.addEventListener('keydown', event => {
-      this.keyState[event.key || event.which] = true;
-    }, true);
-    document.addEventListener('keyup', event => {
-      this.keyState[event.key || event.which] = false;
-    }, true);
+
+    if(!this.ai){
+      document.addEventListener('keydown', event => {
+        this.keyState[event.key || event.which] = true;
+      }, true);
+      document.addEventListener('keyup', event => {
+        this.keyState[event.key || event.which] = false;
+      }, true);
+    } else {
+      this.speed = 10; 
+    }
+    
    
 
   }// constructor
@@ -68,6 +76,16 @@ export default class Paddle {
     if (this.keyState ['/'] && this.player === 'player2') {
       this.down();
     }
+
+    if(this.ai){
+      this.y = this.ball.y - this.height / 2;
+      if(this.y < this.ball.y - 300) {
+        this.ball.y += 6;
+      } else if (this.y > this.ball.y + 300) {
+        this.ball.y -= 6;
+      }
+    }
+
     let rect = document.createElementNS(SVG_NS, 'rect');
     rect.setAttributeNS(null, 'fill', 'white');
     rect.setAttributeNS(null, 'width', this.width);

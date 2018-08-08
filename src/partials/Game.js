@@ -29,7 +29,9 @@ export default class Game {
       ((this.height - this.paddleHeight) / 2),
             KEYS.a,
             KEYS.z,
-            'player1'
+            'player1',
+            false,
+            this.ball
     );
 
     this.player2 = new Paddle(
@@ -40,7 +42,9 @@ export default class Game {
       ((this.height - this.paddleHeight) / 2),
       KEYS.up,
       KEYS.down,
-      'player2'
+      'player2',
+      true,
+      this.ball
         );
     // this.player2ai = new Paddle(
     //     this.height,
@@ -70,6 +74,14 @@ export default class Game {
 
     }// constructor
    
+   reset(player) {
+       this.pause = true;
+       alert('you win');
+       setTimeout(function(){
+        location.reload();
+       },2000);
+   }
+
 
     render() {
 
@@ -77,7 +89,7 @@ export default class Game {
         // ...slightly broken because it still listens for the paddles' keydown
         if (this.pause) {
             return;
-    }
+        }
     
     // be sure to empty out the last frame before re-rendering
     this.gameElement.innerHTML = '';
@@ -99,11 +111,12 @@ export default class Game {
     if (this.player1.score === 3) {
         this.winner.render(svg, this.player1.player);
         this.reset();
-        return; 
+        
     } else if (this.player2.score === 3) {
         this.winner.render(svg, this.player2.player);
+        
         this.reset();
-        return; 
+        
     }
     
     }
