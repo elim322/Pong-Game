@@ -82,8 +82,9 @@ export default class Paddle {
       this.down();
     }
 // ai ball tracking (needs offset)
+var randomDelay = Math.floor(Math.random() * 30 + 4) //this randomizes the counter to offset vector of ball
     if(this.ai){
-      if(this.counter == 4) { //how often the ai can move up or down
+      if(this.counter > randomDelay) { //how often the ai can move up or down
         //if the difference of center of the paddle and ball are greater than half the height of the paddle
         if (Math.abs((this.ball.y + this.ball.radius) - (this.y + this.height/2)) > this.height/3) { //how sensitive to whether it needs to go up or down
           if((this.ball.y + this.ball.radius) < (this.y + this.height/2)) {
