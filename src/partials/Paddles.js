@@ -14,6 +14,11 @@ export default class Paddle {
     this.keyState = {};
     this.ai = ai; // true or false
     this.ball = ball; // to track ball position
+    this.counter = 0 //counter for when AI takes effect
+
+    if(this.ai) {
+      this.speed = 50;// how much ai moves on each keypress
+    }
  
     // document.addEventListener('keydown', event => {
     //   switch (event.key) {
@@ -76,14 +81,21 @@ export default class Paddle {
     if (this.keyState ['/'] && this.player === 'player2') {
       this.down();
     }
-
+// ai ball tracking (needs offset)
     if(this.ai){
-      this.y = this.ball.y - this.height / 2;
-      if(this.y < this.ball.y - 300) {
-        this.ball.y += 6;
-      } else if (this.y > this.ball.y + 300) {
-        this.ball.y -= 6;
+      if(this.counter == 4) { //how often the ai can move up or down
+        //if the difference of center of the paddle and ball are greater than half the height of the paddle
+        if (Math.abs((this.ball.y + this.ball.radius) - (this.y + this.height/2)) > this.height/3) { //how sensitive to whether it needs to go up or down
+          if((this.ball.y + this.ball.radius) < (this.y + this.height/2)) {
+            this.up();
+          } else {
+            this.down();
+          } 
+        }
+   
+        this.counter = 0; 
       }
+      this.counter++
     }
 
     let rect = document.createElementNS(SVG_NS, 'rect');

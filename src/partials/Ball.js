@@ -65,10 +65,10 @@ export default class Ball {
     this.x = this.boardWidth / 2;
     this.y = this.boardHeight / 2;
 
-    // generates random number between -5 and 5 that isn't 0
+    // generates random number between -3 and 3 that isn't 0
     this.vy = 0;
     while( this.vy === 0 ) {
-      this.vy = Math.floor(Math.random() * 10 - 5);   
+      this.vy = Math.floor(Math.random() * 6 - 3);   
     }
     // a number between -5 and 5, based on this.vy
     // this guarantees that if vy is large, vx is small (and vice versa)
